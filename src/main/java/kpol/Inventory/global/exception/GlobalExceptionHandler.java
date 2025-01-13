@@ -1,4 +1,4 @@
-package kkpod.ToyProject.exception;
+package kpol.Inventory.global.exception;
 
 public class GlobalExceptionHandler {
     

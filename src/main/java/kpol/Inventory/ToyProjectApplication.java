@@ -1,4 +1,4 @@
-package kkpod.ToyProject;
+package kpol.Inventory;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
