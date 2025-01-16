@@ -3,6 +3,7 @@ package kpol.Inventory.domain.member.entity;
 import jakarta.persistence.*;
 import kpol.Inventory.domain.board.entity.Board;
 import kpol.Inventory.domain.comment.entity.Comment;
+import kpol.Inventory.domain.member.enums.MemberRole;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -21,9 +22,6 @@ public class Member {
     private Long id;
 
     @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
     private String nickname;
 
     @Column(nullable = false, unique = true)
@@ -33,7 +31,8 @@ public class Member {
     private String password;
 
     @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
