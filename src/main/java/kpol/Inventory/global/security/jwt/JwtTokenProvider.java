@@ -87,7 +87,7 @@ public class JwtTokenProvider implements InitializingBean {
 
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
-        return new UsernamePasswordAuthenticationToken(member, token, authorities);
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), token, authorities);
     }
 
     public boolean validateToken(String token) {

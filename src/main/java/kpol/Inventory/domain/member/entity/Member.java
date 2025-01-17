@@ -3,6 +3,7 @@ package kpol.Inventory.domain.member.entity;
 import jakarta.persistence.*;
 import kpol.Inventory.domain.board.entity.Board;
 import kpol.Inventory.domain.comment.entity.Comment;
+import kpol.Inventory.domain.member.dto.req.SignupRequestDto;
 import kpol.Inventory.domain.member.enums.MemberRole;
 import lombok.*;
 
@@ -22,6 +23,9 @@ public class Member {
     private Long id;
 
     @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
     private String nickname;
 
     @Column(nullable = false, unique = true)
@@ -39,4 +43,12 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
+
+    public Member(SignupRequestDto signupRequestDto, String encodedPassword) {
+        this.username = signupRequestDto.getUsername();
+        this.nickname = signupRequestDto.getNickname();
+        this.email = signupRequestDto.getEmail();
+        this.password = encodedPassword;
+        this.role = MemberRole.USER;
+    }
 }
