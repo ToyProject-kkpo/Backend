@@ -24,11 +24,13 @@ public class Member {
     private String username;
 
     @Column(nullable = false)
+    @Setter(AccessLevel.PUBLIC)
     private String nickname;
 
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Setter(AccessLevel.PUBLIC)
     @Column(nullable = false)
     private String password;
 
