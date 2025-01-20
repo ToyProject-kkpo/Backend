@@ -1,6 +1,7 @@
 package kpol.Inventory.domain.member.service;
 
 import jakarta.transaction.Transactional;
+import kpol.Inventory.domain.member.dto.req.DeleteMemberRequestDto;
 import kpol.Inventory.domain.member.dto.req.LoginRequestDto;
 import kpol.Inventory.domain.member.dto.req.SignupRequestDto;
 import kpol.Inventory.domain.member.dto.res.LoginResponseDto;
@@ -119,6 +120,7 @@ public class MemberService {
         return loginResponseDto;
     }
 
+    @Transactional
     public Boolean checkEmailDuplicated(String email) {
         if (memberRepository.existsByEmail(email)) {
             throw new CustomException(ErrorCode.EMAIL_DUPLICATED);
@@ -126,10 +128,28 @@ public class MemberService {
         return true;
     }
 
+    @Transactional
     public Boolean checkNicknameDuplicated(String nickname) {
         if (memberRepository.existsByNickname(nickname)) {
             throw new CustomException(ErrorCode.NICKNAME_DUPLICATED);
         }
+        return true;
+    }
+
+    @Transactional
+    public Boolean deleteMember(Member member, DeleteMemberRequestDto deleteMemberRequestDto) {
+        if (!memberRepository.existsByEmail(member.getEmail())) {
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        boolean matchPassword = passwordEncoder.matches(deleteMemberRequestDto.getPassword(), member.getPassword());
+        if (!matchPassword) {
+            throw new CustomException(ErrorCode.PASSWORD_NOT_CORRECT);
+        }
+        log.info("Password Correct !");
+
+        memberRepository.delete(member);
+        log.info("Member {} deleted", member);
         return true;
     }
 }

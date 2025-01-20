@@ -9,6 +9,7 @@ import kpol.Inventory.domain.member.entity.Member;
 import kpol.Inventory.domain.member.repository.MemberRepository;
 import kpol.Inventory.global.exception.CustomException;
 import kpol.Inventory.global.exception.ErrorCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class JwtTokenProvider implements InitializingBean {
 
@@ -87,7 +89,7 @@ public class JwtTokenProvider implements InitializingBean {
 
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), token, authorities);
+        return new UsernamePasswordAuthenticationToken(userDetails, token, authorities);
     }
 
     public boolean validateToken(String token) {
