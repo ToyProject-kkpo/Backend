@@ -1,7 +1,9 @@
 package kpol.Inventory.domain.comment.controller;
 
 
+import kpol.Inventory.domain.comment.dto.req.CommentRequestDto;
 import kpol.Inventory.domain.comment.dto.res.CommentResponseDto;
+import kpol.Inventory.domain.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,18 +12,29 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/comments")
+@RequestMapping("/api/comments")
 public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping
-    public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentResponseDto responseDto) {
-        return ResponseEntity.ok(commentService.getCommentsByboard(boardId));
+    // 댓글 생성 API
+    @PostMapping("/{boardId}/{memberId}")
+    public ResponseEntity<CommentResponseDto> createComment(
+
+            //url 경로에서 id 를 추출
+            @PathVariable Long boardId,
+            @PathVariable Long memberId,
+
+            // json 데이터를 dto 객체로 변환 , 댓글 생성 , 생성된 댓글 정보를 dto로 반환
+            @RequestBody CommentRequestDto requestDto) {
+        CommentResponseDto responseDto = commentService.createComment(boardId, memberId, requestDto);
+        return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("/board/{boardId}")
-    public RespoEntity<List<CommentResponseDto>> getCommentsByboard(@PathVariable Long boardId) {
-        return ResponseEntity.ok(commentService.getCommentsByBoard(boardId));
+    //boardId에 속한 댓글 조회
+    @GetMapping("/{boardId}")
+    public ResponseEntity<List<CommentResponseDto>> getCommentsByBoardId(@PathVariable Long boardId) {
+        List<CommentResponseDto> comments = commentService.getCommentByBoard(boardId);
+        return ResponseEntity.ok(comments);
     }
 }
