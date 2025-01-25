@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Builder // builder 추가
 @Getter
@@ -51,5 +52,9 @@ public class Comment {
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> replies = new ArrayList<>();
 
+    public void updateContent(String content) {
+        this.content = content;
+        this.updatedAt = LocalDateTime.now(); // 수정 시간 업데이트
+    }
 
 }

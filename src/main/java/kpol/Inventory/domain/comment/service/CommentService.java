@@ -28,6 +28,7 @@ public class CommentService {
     private final BoardRepository boardRepository;
 
     @Transactional
+    //댓글 작성 및 저장 기능
     public CommentResponseDto createComment(Long boardId, Long memberId, CommentRequestDto requestDto) { //댓글 작성 기능
 
         // 게시글과 회원 조회
@@ -70,6 +71,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
+    // 댓글과 대댓글 구조 구현
     public List<CommentResponseDto> getCommentByBoard(Long boardId) {
         // 게시글에 속한 댓글 목록 조회
         List<Comment> comments = commentRepository.findByBoardId(boardId);
@@ -102,6 +104,34 @@ public class CommentService {
                         getReplies(reply.getId()) //대댓글 조회 (재귀)
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    // 댓글 수정 기능
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto){
+        // 댓글 조회
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다"));
+
+        // 댓글 내용 수정
+        comment.updateContent(requestDto.getContent());
+
+        // 수정된 댓글 저장
+        Comment updatedComment = commentRepository.save(comment);
+
+        // 응답 DTO 생성 , 수정된 댓글 정보를 dto로 변환 후 반환
+        return new CommentResponseDto(
+                updatedComment.getId(),
+                updatedComment.getContent(),
+                updatedComment.getCreatedAt(),
+                updatedComment.getUpdatedAt(),
+                updatedComment.getMember().getId(),
+                updatedComment.getBoard().getId(),
+                updatedComment.getParentComment() != null ? updatedComment.getParentComment().getId() : null,
+                getReplies(updatedComment.getId())
+        );
+
+
     }
 
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/comments")
+@RequestMapping("/api/comment")
 public class CommentController {
 
     private final CommentService commentService;
@@ -36,5 +36,14 @@ public class CommentController {
     public ResponseEntity<List<CommentResponseDto>> getCommentsByBoardId(@PathVariable Long boardId) {
         List<CommentResponseDto> comments = commentService.getCommentByBoard(boardId);
         return ResponseEntity.ok(comments);
+    }
+
+    //수정 API
+    @PutMapping("/{commentId}")
+    public ResponseEntity<CommentResponseDto> updateComment(
+            @PathVariable Long commentId,
+            @RequestBody CommentRequestDto requestDto){
+        CommentResponseDto responseDto = commentService.updateComment(commentId,requestDto);
+        return ResponseEntity.ok(responseDto);
     }
 }
