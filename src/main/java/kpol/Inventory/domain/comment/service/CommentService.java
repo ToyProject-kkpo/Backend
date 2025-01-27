@@ -134,5 +134,16 @@ public class CommentService {
 
     }
 
+    @Transactional
+    // 댓글 삭제 기능
+    public void deleteComment(Long commentId) {
+        // 댓글 조회
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+
+        // 댓글 삭제
+        commentRepository.delete(comment);
+    }
+
 
 }

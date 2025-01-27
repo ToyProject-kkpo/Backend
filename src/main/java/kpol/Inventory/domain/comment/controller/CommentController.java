@@ -46,4 +46,11 @@ public class CommentController {
         CommentResponseDto responseDto = commentService.updateComment(commentId,requestDto);
         return ResponseEntity.ok(responseDto);
     }
+
+    // 삭제 API
+    @DeleteMapping("/{commentId")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+        return ResponseEntity.noContent().build();
+    } // Id 받아오면 안 되나요..?
 }
