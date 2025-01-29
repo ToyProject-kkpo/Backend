@@ -24,13 +24,11 @@ public class Member {
     private String username;
 
     @Column(nullable = false)
-    @Setter(AccessLevel.PUBLIC)
     private String nickname;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Setter(AccessLevel.PUBLIC)
     @Column(nullable = false)
     private String password;
 
@@ -42,4 +40,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
+
+    public void updateInfo(String nickname, String password){
+        this.nickname = nickname;
+        this.password = password;
+    }
 }

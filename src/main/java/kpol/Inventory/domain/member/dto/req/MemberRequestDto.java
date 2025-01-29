@@ -1,10 +1,10 @@
 package kpol.Inventory.domain.member.dto.req;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
+@NoArgsConstructor
 public class MemberRequestDto {
     private String username;
     private String nickname;

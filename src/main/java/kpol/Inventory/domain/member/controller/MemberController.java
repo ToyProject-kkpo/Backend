@@ -1,5 +1,7 @@
 package kpol.Inventory.domain.member.controller;
 
+import kpol.Inventory.domain.member.dto.req.MemberRequestDto;
+import kpol.Inventory.domain.member.dto.res.MemberResponseDto;
 import kpol.Inventory.domain.member.entity.Member;
 import kpol.Inventory.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -17,19 +19,20 @@ public class MemberController {
 
     // 유저 정보 조회
     @GetMapping("/{id}")
-    public ResponseEntity<Member> getMember(@PathVariable Long id) {
-        Optional<Member> member = memberService.getMemberById(id);
-        return member.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<MemberResponseDto> getMember(@PathVariable Long id) {
+        MemberResponseDto member = memberService.getMemberById(id);
+        return ResponseEntity.ok(member);
     }
 
     // 유저 정보 수정
     @PutMapping("/{id}")
-    public ResponseEntity<Member> updateMember(
+    public ResponseEntity<MemberResponseDto> updateMember(
             @PathVariable Long id,
-            @RequestBody Member update) {
-        Member member = memberService.updateMember(
-                id, update.getNickname(), update.getPassword());
-        return ResponseEntity.ok(member);
+            @RequestBody MemberRequestDto updateDto) {
+
+        MemberResponseDto updatedMember = memberService.updateMember(
+                id, updateDto.getNickname(), updateDto.getPassword());
+
+        return ResponseEntity.ok(updatedMember);
     }
 }
