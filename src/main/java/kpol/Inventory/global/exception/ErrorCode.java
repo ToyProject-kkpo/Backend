@@ -12,6 +12,10 @@ public enum ErrorCode {
 
     // Board
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "게시물 조회에 실패하였습니다."),
+    BOARD_CREATED_FAILED(HttpStatus.BAD_REQUEST, 400, "게시물 생성에 실패하였습니다."),
+    TAG_ADDED_FAILED(HttpStatus.BAD_REQUEST, 400, "해시태그 추가에 실패하였습니다."),
+    KEYWORD_CANNOT_EMPTY(HttpStatus.BAD_REQUEST, 400, "검색어는 공백이 될 수 없습니다."),
+    TAG_CANNOT_EMPTY(HttpStatus.BAD_REQUEST, 400, "해시태그는 공백이 될 수 없습니다."),
 
     // jwt Exception
     JWT_NOT_VALID(HttpStatus.UNAUTHORIZED, 401, "[Jwt] 유효하지 않은 Jwt"),
@@ -22,6 +26,8 @@ public enum ErrorCode {
     JWT_UNSUPPORTED(HttpStatus.UNAUTHORIZED, 401, "[Jwt] 지원하지 않는 토큰입니다."),
     JWT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "[Jwt] 리프레시 토큰 조회 실패"),
     JWT_NOT_MATCH(HttpStatus.BAD_REQUEST, 400, "[Jwt] 리프레시 토큰 불일치"),
+    JWT_ENTRY_POINT(HttpStatus.UNAUTHORIZED, 401, "[Jwt] 인증되지 않은 사용자입니다."),
+    JWT_ACCESS_DENIED(HttpStatus.FORBIDDEN, 403, "[Jwt] 리소스에 접근할 권한이 없습니다."),
 
     // Member
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "맴버를 찾을 수 없습니다."),

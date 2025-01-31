@@ -9,8 +9,8 @@ import java.util.Date;
 @Builder
 public class LoginResponseDto {
 
-    private String accessToken;
-    private String refreshToken;
-    private Long accessTokenExpires;
-    private Date accessTokenExpiresDate;
+    private final String accessToken;
+    private final String refreshToken;
+    private final Long accessTokenExpires;
+    private final Date accessTokenExpiresDate;
 }
