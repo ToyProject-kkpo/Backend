@@ -7,6 +7,6 @@ import lombok.Getter;
 @Builder
 public class SignupResponseDto {
 
-    private String email;
-    private String nickname;
+    private final String email;
+    private final String nickname;
 }
