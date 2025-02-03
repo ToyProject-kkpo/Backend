@@ -24,24 +24,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final MemberRepository memberRepository;
+
     private final BoardRepository boardRepository;
 
     @Transactional
     //댓글 작성 및 저장 기능
-    public CommentResponseDto createComment(Long boardId, Long memberId, CommentRequestDto requestDto) { //댓글 작성 기능
+    public CommentResponseDto createComment(Long boardId, Member member, CommentRequestDto requestDto) { //댓글 작성 기능
 
         // 게시글과 회원 조회
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("회원정보를 찾을 수 없습니다."));
+
 
         //대댓글 작성시, 부모 댓글 확인
         Comment parentComment = null; //디폹트 값이 null, 대댓글인 경우에만 부모 댓글 객체 할당
         if (requestDto.getParentCommentId() != null) {
             parentComment = commentRepository.findById(requestDto.getParentCommentId())
-                    .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."))
+                    .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
         }
 
         //댓글 작성
@@ -84,7 +83,8 @@ public class CommentService {
                         comment.getUpdatedAt(),
                         comment.getMember().getId(),
                         comment.getBoard().getId(),
-                        comment.getParentComment() != null ? comment.getParentComment().getId()
+                        comment.getParentComment() != null ? comment.getParentComment().getId() : null,
+                        getReplies(comment.getId())
                 ))
                 .collect(Collectors.toList());
     }
@@ -136,7 +136,7 @@ public class CommentService {
 
     @Transactional
     // 댓글 삭제 기능
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long commentId, Member member) {
         // 댓글 조회
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));

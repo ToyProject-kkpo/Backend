@@ -4,8 +4,11 @@ package kpol.Inventory.domain.comment.controller;
 import kpol.Inventory.domain.comment.dto.req.CommentRequestDto;
 import kpol.Inventory.domain.comment.dto.res.CommentResponseDto;
 import kpol.Inventory.domain.comment.service.CommentService;
+import kpol.Inventory.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,17 +21,13 @@ public class CommentController {
     private final CommentService commentService;
 
     // 댓글 생성 API
-    @PostMapping("/{boardId}/{memberId}")
+    @PostMapping("/{boardId}")
     public ResponseEntity<CommentResponseDto> createComment(
-
-            //url 경로에서 id 를 추출
-            @PathVariable Long boardId,
-            @PathVariable Long memberId,
-
-            // json 데이터를 dto 객체로 변환 , 댓글 생성 , 생성된 댓글 정보를 dto로 반환
-            @RequestBody CommentRequestDto requestDto) {
-        CommentResponseDto responseDto = commentService.createComment(boardId, memberId, requestDto);
-        return ResponseEntity.ok(responseDto);
+            @PathVariable Long boardId, // URL 경로에서 boardId 추출
+            @AuthenticationPrincipal Member member, // 현재 로그인한 사용자 정보
+            @Valid @RequestBody CommentRequestDto requestDto) { // 요청 본문 데이터
+        CommentResponseDto responseDto = commentService.createComment(boardId, member, requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     //boardId에 속한 댓글 조회
@@ -42,15 +41,18 @@ public class CommentController {
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDto> updateComment(
             @PathVariable Long commentId,
-            @RequestBody CommentRequestDto requestDto){
+            @AuthenticationPrincipal Member member, // 현재 로그인한 사용자 정보
+            @Valid @RequestBody CommentRequestDto requestDto){
         CommentResponseDto responseDto = commentService.updateComment(commentId,requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
     // 삭제 API
     @DeleteMapping("/{commentId")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
-        commentService.deleteComment(commentId);
+    public ResponseEntity<Void> deleteComment(
+            @PathVariable Long commentId,
+            @AuthenticationPrincipal Member member) {
+        commentService.deleteComment(commentId, member);
         return ResponseEntity.noContent().build();
-    } // Id 받아오면 안 되나요..?
+    }
 }
