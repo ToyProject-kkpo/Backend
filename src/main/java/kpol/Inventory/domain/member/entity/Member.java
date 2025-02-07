@@ -44,6 +44,9 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Board> likeBoard = new ArrayList<>();
+
     public Member(SignupRequestDto signupRequestDto, String encodedPassword) {
         this.username = signupRequestDto.getUsername();
         this.nickname = signupRequestDto.getNickname();

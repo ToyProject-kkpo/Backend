@@ -13,7 +13,11 @@ public enum ErrorCode {
     // Board
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "게시물 조회에 실패하였습니다."),
     BOARD_CREATED_FAILED(HttpStatus.BAD_REQUEST, 400, "게시물 생성에 실패하였습니다."),
+    BOARD_DELETED_FAILED(HttpStatus.BAD_REQUEST, 400, "게시물 삭제에 실패하였습니다."),
+    BOARD_UPDATED_FAILED(HttpStatus.BAD_REQUEST, 400, "게시물 수정에 실패하였습니다."),
+    BOARD_GET_LATEST(HttpStatus.NOT_FOUND, 404, "최신 글 조회에 실패하였습니다."),
     TAG_ADDED_FAILED(HttpStatus.BAD_REQUEST, 400, "해시태그 추가에 실패하였습니다."),
+    TAG_FOUNDED_FAILED(HttpStatus.BAD_REQUEST, 400, "해시태그 기반 검색에 실패하였습니다."),
     KEYWORD_CANNOT_EMPTY(HttpStatus.BAD_REQUEST, 400, "검색어는 공백이 될 수 없습니다."),
     TAG_CANNOT_EMPTY(HttpStatus.BAD_REQUEST, 400, "해시태그는 공백이 될 수 없습니다."),
 
