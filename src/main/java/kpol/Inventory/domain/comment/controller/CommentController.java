@@ -1,10 +1,12 @@
 package kpol.Inventory.domain.comment.controller;
 
 
+import jakarta.validation.Valid;
 import kpol.Inventory.domain.comment.dto.req.CommentRequestDto;
 import kpol.Inventory.domain.comment.dto.res.CommentResponseDto;
 import kpol.Inventory.domain.comment.service.CommentService;
 import kpol.Inventory.domain.member.entity.Member;
+import kpol.Inventory.global.security.jwt.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,35 +26,31 @@ public class CommentController {
     @PostMapping("/{boardId}")
     public ResponseEntity<CommentResponseDto> createComment(
             @PathVariable Long boardId, // URL 경로에서 boardId 추출
-            @AuthenticationPrincipal Member member, // 현재 로그인한 사용자 정보
+            @AuthenticationPrincipal UserDetailsImpl userDetails, // 현재 로그인한 사용자 정보
             @Valid @RequestBody CommentRequestDto requestDto) { // 요청 본문 데이터
-        CommentResponseDto responseDto = commentService.createComment(boardId, member, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.createComment(boardId, userDetails.getMember(), requestDto));
     }
 
     //boardId에 속한 댓글 조회
     @GetMapping("/{boardId}")
     public ResponseEntity<List<CommentResponseDto>> getCommentsByBoardId(@PathVariable Long boardId) {
-        List<CommentResponseDto> comments = commentService.getCommentByBoard(boardId);
-        return ResponseEntity.ok(comments);
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.getCommentByBoard(boardId));
     }
 
     //수정 API
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDto> updateComment(
             @PathVariable Long commentId,
-            @AuthenticationPrincipal Member member, // 현재 로그인한 사용자 정보
+            @AuthenticationPrincipal UserDetailsImpl userDetails, // 현재 로그인한 사용자 정보
             @Valid @RequestBody CommentRequestDto requestDto){
-        CommentResponseDto responseDto = commentService.updateComment(commentId,requestDto);
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.updateComment(commentId,requestDto));
     }
 
     // 삭제 API
-    @DeleteMapping("/{commentId")
-    public ResponseEntity<Void> deleteComment(
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Boolean> deleteComment(
             @PathVariable Long commentId,
-            @AuthenticationPrincipal Member member) {
-        commentService.deleteComment(commentId, member);
-        return ResponseEntity.noContent().build();
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.deleteComment(commentId, userDetails.getMember()));
     }
 }
