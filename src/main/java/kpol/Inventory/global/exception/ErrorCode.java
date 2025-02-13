@@ -10,6 +10,21 @@ public enum ErrorCode {
 
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "서버 에러 발생"),
 
+    // Comment
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "댓글을 찾을 수 없습니다."),
+    COMMENT_CREATE_FAILED(HttpStatus.BAD_REQUEST, 400, "댓글 생성에 실패하였습니다."),
+    COMMENT_UPDATE_FAILED(HttpStatus.BAD_REQUEST, 400, "댓글 수정에 실패하였습니다."),
+    COMMENT_DELETE_FAILED(HttpStatus.BAD_REQUEST, 400, "댓글 삭제에 실패하였습니다."),
+
+    // Board
+    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "게시물 조회에 실패하였습니다."),
+    BOARD_CREATED_FAILED(HttpStatus.BAD_REQUEST, 400, "게시물 생성에 실패하였습니다."),
+    BOARD_DELETED_FAILED(HttpStatus.BAD_REQUEST, 400, "게시물 삭제에 실패하였습니다."),
+    BOARD_UPDATED_FAILED(HttpStatus.BAD_REQUEST, 400, "게시물 수정에 실패하였습니다."),
+    BOARD_GET_LATEST(HttpStatus.NOT_FOUND, 404, "최신 글 조회에 실패하였습니다."),
+    TAG_ADDED_FAILED(HttpStatus.BAD_REQUEST, 400, "해시태그 추가에 실패하였습니다."),
+    TAG_FOUNDED_FAILED(HttpStatus.BAD_REQUEST, 400, "해시태그 기반 검색에 실패하였습니다."),
+  
     // Board
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "게시물 조회에 실패하였습니다."),
     BOARD_CREATED_FAILED(HttpStatus.BAD_REQUEST, 400, "게시물 생성에 실패하였습니다."),
@@ -45,7 +60,7 @@ public enum ErrorCode {
 
     // RequestBody
     INVALID_PARAMS(HttpStatus.BAD_REQUEST, 400, "유효하지 않은 데이터가 전송되었습니다.");
-
+  
     private final HttpStatus httpStatus;
     private final Integer code;
     private final String message;
