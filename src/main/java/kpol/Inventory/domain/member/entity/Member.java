@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import kpol.Inventory.domain.board.entity.Board;
 import kpol.Inventory.domain.comment.entity.Comment;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -41,8 +44,15 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Board> likeBoard = new ArrayList<>();
+
     public void updateInfo(String nickname, String password){
         this.nickname = nickname;
         this.password = password;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role));
     }
 }

@@ -1,13 +1,10 @@
 package kpol.Inventory.domain.member.repository;
 
-
 import kpol.Inventory.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-
-    Member findByNickname(String nickname);
-    Member findByEmail(String email);
-
+    Optional<Member> findByEmail(String email);
 }
